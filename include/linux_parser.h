@@ -27,6 +27,9 @@ int RunningProcesses();
 std::string OperatingSystem();
 std::string Kernel();
 
+//my functions
+std::string ValueFromKey(std::string key,std::string filePath);
+
 // CPU
 enum CPUStates {
   kUser_ = 0,
@@ -51,7 +54,7 @@ std::string Command(int pid);
 std::string Ram(int pid);
 std::string Uid(int pid);
 std::string User(int pid);
-long int UpTime(int pid);
+long UpTime(int pid);
 };  // namespace LinuxParser
 
 #endif

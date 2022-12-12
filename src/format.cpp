@@ -13,7 +13,7 @@ string Format::ElapsedTime(long seconds) {
   int min;
   int hours;
   string hh,mm,ss;
-  hours = sec/3600;
+  hours = seconds/3600;
   min = (seconds % 3600) / 60;
   sec = ((seconds % 3600) % 60);
 

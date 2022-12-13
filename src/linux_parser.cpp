@@ -133,6 +133,7 @@ long LinuxParser::Jiffies() {
 long total_jiffies = 0;
 for (string jiffie : jiffies)
 {
+  if(jiffie != "")
     total_jiffies += std::stol(jiffie);
 }
 return total_jiffies;
@@ -169,7 +170,9 @@ return s_active_jiffies;
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { 
   vector<string> jiffies = CpuUtilization();
-long idle_jiffies = 0,idle = std::stol(jiffies[3]),iowait = std::stol(jiffies[4]);
+long idle_jiffies = 0;
+  long iowait = std::atol(jiffies[4].c_str());
+  long idle = std::atol(jiffies[3].c_str());
 idle_jiffies = idle + iowait;
 return idle_jiffies;
 }
@@ -245,7 +248,7 @@ string LinuxParser::Command(int pid) {
 string LinuxParser::Ram(int pid) { 
   string ram = "",path = kProcDirectory+std::to_string(pid)+kStatusFilename;
   ram = LinuxParser::ValueFromKey("VmSize",path);
-  auto value_in_mb = std::stol(ram)/1024;
+  auto value_in_mb = std::atol(ram.c_str())/1024;
   return std::to_string(value_in_mb);
  }
 
@@ -284,7 +287,8 @@ string LinuxParser::User(int pid) {
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) { 
-  long ticks = 0,temp =0;
+  long ticks = 0;
+  string temp;
   string line,extra;
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
   if (stream.is_open()){
@@ -295,5 +299,5 @@ long LinuxParser::UpTime(int pid) {
     }
     linestream >> temp;
   }
-  ticks = temp/sysconf(_SC_CLK_TCK);
+  ticks = std::atol(temp.c_str())/sysconf(_SC_CLK_TCK);
   return ticks;}
